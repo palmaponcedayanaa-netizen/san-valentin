@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Para Andrea 💖</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; touch-action: manipulation; }
+
+        body {
+            background: linear-gradient(-45deg, #ff9a9e, #fecfef, #feada6, #ffdde1);
+            background-size: 400% 400%;
+            animation: gradientAnim 6s ease infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        @keyframes gradientAnim {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* ICONOS CAYENDO (RESTAURADOS) */
+        .particle {
+            position: absolute;
+            top: -65px;
+            user-select: none;
+            pointer-events: none;
+            animation: fall linear forwards;
+            z-index: 2;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(110vh) rotate(360deg); }
+        }
+
+        /* CUADRO CRISTAL CON BORDE ROJO */
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.25); 
+            backdrop-filter: blur(15px); 
+            -webkit-backdrop-filter: blur(15px);
+            padding: 30px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            border: 4px solid #ff4d6d;
+            width: 90%; 
+            max-width: 400px;
+            position: relative;
+            z-index: 10;
+        }
+
+        h1 { color: #ff4d6d; font-size: 1.6rem; margin: 20px 0; }
+        .firma { color: #ff4d6d; font-size: 1.1rem; margin-bottom: 20px; font-style: italic; font-weight: bold; }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 30px;
+            min-height: 100px;
+        }
+
+        button {
+            padding: 15px 25px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 12px;
+            border: none;
+        }
+
+        #btnSi { 
+            background-color: #ff4d6d; 
+            color: white; 
+            z-index: 100;
+            animation: latido 1.2s infinite;
+        }
+
+        @keyframes latido {
+            0% { transform: scale(1); }
+            15% { transform: scale(1.15); }
+            30% { transform: scale(1); }
+            45% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+
+        #btnNo {
+            background-color: #555;
+            color: white;
+            position: relative;
+            transition: all 0.15s ease-out;
+            z-index: 1000;
+            touch-action: none;
+        }
+
+        img { width: 160px; border-radius: 15px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <img src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3eTR4aG1rdDZzamV2azM0MTVvZXNhbHFhNm16bzZ4bXNsZjRpemR3eSZlcD12MV9naWZzX3JlbGF0ZWQmY3Q9Zw/cGTdQpR1cXkHU99mnZ/giphy.gif" alt="Gatitos">
+    <h1>¿Te gustaría ser mi San Valentín, Andrea? 💖</h1>
+    <p class="firma">— Con mucho amor, Luis —</p>
+
+    <div class="buttons">
+        <button id="btnSi" onclick="aceptar()">¡SÍ! 😍</button>
+        <button id="btnNo" onclick="evitarClick(event)" onmouseover="moverBoton()" ontouchstart="moverBoton()">No 😢</button>
+    </div>
+</div>
+
+<script>
+    // Lluvia de iconos
+    setInterval(() => {
+        const p = document.createElement('div');
+        p.classList.add('particle');
+        p.innerText = ['🌹', '❤️', '💖', '🥰'][Math.floor(Math.random() * 4)];
+        p.style.left = Math.random() * 100 + 'vw';
+        p.style.fontSize = '30px'; 
+        p.style.animationDuration = (Math.random() * 2 + 3) + 's';
+        document.body.appendChild(p);
+        setTimeout(() => p.remove(), 5000);
+    }, 500);
+
+    const btnNo = document.getElementById('btnNo');
+
+    function moverBoton() {
+        // ÁREA DE MOVIMIENTO LIMITADA A 400px
+        const areaLimite = 400;
+        
+        // Obtenemos el tamaño real de la ventana para no pasarnos
+        const winW = window.innerWidth;
+        const winH = window.innerHeight;
+
+        // Calculamos el ancho y alto real permitido (el menor entre 400px o la pantalla)
+        const usableW = Math.min(areaLimite, winW - btnNo.offsetWidth - 20);
+        const usableH = Math.min(areaLimite, winH - btnNo.offsetHeight - 20);
+
+        // Centramos el área de 400px en la pantalla
+        const minX = (winW - usableW) / 2;
+        const minY = (winH - usableH) / 2;
+
+        const randomX = minX + (Math.random() * usableW);
+        const randomY = minY + (Math.random() * usableH);
+
+        btnNo.style.position = "fixed";
+        btnNo.style.left = randomX + "px";
+        btnNo.style.top = randomY + "px";
+    }
+
+    function evitarClick(e) {
+        e.preventDefault();
+        moverBoton();
+        return false;
+    }
+
+    function aceptar() {
+        alert("¡SABÍA QUE DIRÍAS QUE SÍ! ❤️ Nos vemos el 14, Andrea.");
+        window.location.href = "https://youtu.be/98Akpf1ph2o?si=06KvK7zcfJQFXkpp";
+    }
+</script>
+
+</body>
+</html>
